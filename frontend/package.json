@@ -1,0 +1,9 @@
+{
+  "name": "quantum-teleportation-lab-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {"dev": "npm exec -- vite", "build": "npm exec -- tsc -b && npm exec -- vite build", "test": "npm exec -- vitest run"},
+  "dependencies": {"@vitejs/plugin-react": "latest", "vite": "latest", "typescript": "latest", "react": "latest", "react-dom": "latest"},
+  "devDependencies": {"vitest": "latest", "jsdom": "latest", "@types/react": "latest", "@types/react-dom": "latest"}
+}
