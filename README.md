@@ -2,7 +2,7 @@
 
 [![Verify](https://github.com/<owner>/<repository>/actions/workflows/verify.yml/badge.svg)](https://github.com/<owner>/<repository>/actions/workflows/verify.yml)
 
-> **[Open the live demo](https://<project>.vercel.app)** · Update this link after the first Vercel deployment.
+> **[Open the live demo](https://<project>.vercel.app)** · Will Update this link after the first Vercel deployment.
 
 An interactive, full-stack introduction to quantum teleportation. Choose an arbitrary qubit, run the actual three-qubit Qiskit protocol, then follow Alice's measurement, the classical message, and Bob's reconstruction step by step.
 
