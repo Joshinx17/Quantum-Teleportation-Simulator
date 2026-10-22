@@ -44,6 +44,21 @@ npm run dev
 
 Open http://localhost:5173. The default frontend API URL is http://localhost:8000/api.
 
+### Windows: virtual environment moved or broken
+
+Python virtual environments contain absolute paths. If the repository is moved, recreate the backend environment rather than reusing it:
+
+```powershell
+cd "D:\path\to\Quantum-Teleportation-Simulator\backend"
+Remove-Item -Recurse -Force .\venv
+py -3.11 -m venv venv
+.\venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload
+```
+
+Using `python -m pip` and `python -m uvicorn` prevents stale `pip.exe` or `uvicorn.exe` launcher paths. If activation is blocked, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` for the current PowerShell session.
+
 ## Deploy publicly
 
 ### 1. Push this repository to GitHub
