@@ -1,22 +1,30 @@
 # Quantum Teleportation Lab
 
-An interactive, full-stack educational simulator for the three-qubit quantum teleportation protocol. It uses a real Qiskit circuit and statevector simulation—not a visual mock-up—to reconstruct an arbitrary qubit state on Bob's qubit.
+[![Verify](https://github.com/<owner>/<repository>/actions/workflows/verify.yml/badge.svg)](https://github.com/<owner>/<repository>/actions/workflows/verify.yml)
 
-## Features
+> **[Open the live demo](https://<project>.vercel.app)** · Update this link after the first Vercel deployment.
 
-- Six common qubit presets plus arbitrary θ/φ Bloch-sphere input
-- Qiskit-generated circuit, sampled Bell-measurement statistics, and explicit classical communication
-- Fidelity comparison that handles global phase correctly
-- Interactive Bloch comparison, guided execution, error/loading states, responsive dark scientific UI
-- FastAPI/Pydantic API, unit/API tests, Docker Compose configuration
+An interactive, full-stack introduction to quantum teleportation. Choose an arbitrary qubit, run the actual three-qubit Qiskit protocol, then follow Alice's measurement, the classical message, and Bob's reconstruction step by step.
+
+## Highlights
+
+- Guided animated circuit walkthrough with play, pause, reset, and keyboard-accessible stage controls
+- Qiskit statevector simulation with sampled Bell-measurement outcomes and global-phase-invariant fidelity
+- Bloch-sphere input/output comparison, preset states, and arbitrary θ/φ controls
+- Responsive scientific UI with reduced-motion support and clear hosted-service retry feedback
+- GitHub Actions verification plus Vercel + Render deployment configuration
 
 ## Architecture
 
-React + TypeScript communicates with FastAPI. The backend separates HTTP routes, Pydantic contracts, and Qiskit quantum logic. See [architecture](docs/architecture.md), [protocol notes](docs/quantum-teleportation.md), and [API reference](docs/api.md).
+```
+Browser → Vercel (React + TypeScript) → Render (FastAPI + Qiskit)
+```
+
+The browser loads a static Vite build from Vercel. It calls the public Render API for a simulation result; the frontend then animates the educational walkthrough locally from that result. The simulator is ideal and deterministic apart from sampled measurement outcomes—it is not quantum hardware.
 
 ## Run locally
 
-Backend (Python 3.11+ recommended):
+Backend (Python 3.11+):
 
 ```bash
 cd backend
@@ -34,23 +42,39 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. Set `VITE_API_URL` for a deployed API; see `.env.example`.
+Open http://localhost:5173. The default frontend API URL is http://localhost:8000/api.
 
-## Tests and build
+## Deploy publicly
+
+### 1. Push this repository to GitHub
+
+Keep the default branch named `main`. GitHub Actions runs the frontend and backend checks for every pull request and main-branch push.
+
+### 2. Deploy the API on Render
+
+1. In Render, choose **New → Blueprint** and select this repository.
+2. Render reads [render.yaml](render.yaml), builds from `backend/`, and exposes `/api/health`.
+3. Set `ALLOWED_ORIGINS` to your final Vercel domain, for example `https://quantum-teleportation-lab.vercel.app`.
+4. Copy the Render URL and append `/api`, for example `https://quantum-teleportation-api.onrender.com/api`.
+
+### 3. Deploy the site on Vercel
+
+1. Import the GitHub repository in Vercel.
+2. Set **Root Directory** to `frontend`; Vercel reads [frontend/vercel.json](frontend/vercel.json).
+3. Add the `VITE_API_URL` environment variable using the Render API URL from step 2.
+4. Deploy. Every push to `main` now creates the public production site; pull requests create previews.
+
+Open the Vercel URL directly to use the full simulator. If Render's free instance is waking up, the site presents a retry action instead of failing the experience.
+
+### Optional custom domain
+
+Add the domain in Vercel, then update Render's `ALLOWED_ORIGINS` with the exact HTTPS domain.
+
+## Verification
 
 ```bash
 cd backend && python -m pytest tests -q
-cd frontend && npm run build
+cd frontend && npm run test && npm run build
 ```
 
-## Docker
-
-```bash
-docker compose up --build
-```
-
-Then open `http://localhost:5173`.
-
-## Deployment and roadmap
-
-Deploy the frontend to Vercel with `VITE_API_URL` set to your HTTPS API. Deploy the backend on any Python container host. Future extensions include Qiskit Aer/noise models, IBM hardware execution, error correction, and additional algorithms.
+See [architecture](docs/architecture.md), [protocol notes](docs/quantum-teleportation.md), and the [API reference](docs/api.md).
